@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Эхо древних : начало</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at top,#243b55,#0b1020 70%);
+    color:white;
+    min-height:100vh;
+}
+
+.game{
+    width:100%;
+    max-width:700px;
+    margin:0 auto;
+    padding:15px;
+}
+
+h1{
+    text-align:center;
+    margin:10px 0 5px;
+    font-size:32px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#b8c7e0;
+    margin-bottom:20px;
+}
+
+.resources{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.resource{
+    flex:1;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    padding:12px;
+    text-align:center;
+}
+
+.world-map{
+    background:rgba(10,15,30,.85);
+    border:1px solid #3b4c70;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.world-map h2{
+    text-align:center;
+    margin-top:0;
+}
+
+.kingdoms{
+    display:grid;
+    gap:12px;
+}
+
+button{
+    width:100%;
+    border:0;
+    border-radius:12px;
+    padding:14px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    color:white;
+    background:#344b78;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.15);
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+button:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none;
+}
+
+#asterionButton{
+    background:linear-gradient(135deg,#8b1e1e,#d35400);
+}
+
+.lunar{
+    background:linear-gradient(135deg,#3b2b70,#6c5ce7);
+}
+
+.dragon{
+    background:linear-gradient(135deg,#164b35,#168f64);
+}
+
+.city{
+    background:linear-gradient(rgba(20,10,5,.9),rgba(30,10,5,.95));
+    border:1px solid #8f4a28;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+.city h2{
+    color:#ff9d45;
+}
+
+.city-description{
+    color:#d7c5b8;
+    line-height:1.5;
+}
+
+
+/* =========================
+   ПАНЕЛЬ ГЕРОЯ
+========================= */
+
+.hero-panel{
+    background:linear-gradient(
+        135deg,
+        rgba(35,25,60,.95),
+        rgba(15,20,40,.95)
+    );
+
+    border:1px solid #66509b;
+    border-radius:18px;
+
+    padding:18px;
+    margin-bottom:15px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.25);
+}
+
+.hero-panel-title{
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.hero-main{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hero-avatar{
+    width:75px;
+    height:75px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:50px;
+
+    background:rgba(255,255,255,.08);
+    border-radius:16px;
+
+    flex-shrink:0;
+}
+
+.hero-details{
+    flex:1;
+}
+
+.hero-name{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.hero-level{
+    color:#d0b8ff;
+    margin-bottom:8px;
+}
+
+.hero-stat{
+    display:flex;
+    justify-content:space-between;
+
+    padding:8px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    color:#c8d3e8;
+}
+
+.hero-stat:last-child{
+    border-bottom:0;
+}
+
+.hero-stat strong{
+    color:white;
+}
+
+.hero-xp{
+    margin-top:15px;
+}
+
+.hero-xp-text{
+    display:flex;
+    justify-content:space-between;
+    color:#d8c9ff;
+    font-size:14px;
+}
+
+.xp-bar{
+    width:100%;
+    height:12px;
+    background:#202638;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:8px;
+}
+
+.xp-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#7b4dff,#c084fc);
+    transition:width .3s;
+}
+
+.hero-bonus{
+    margin-top:12px;
+    padding:10px;
+
+    background:rgba(123,77,255,.12);
+
+    border-radius:10px;
+
+    color:#cdbbff;
+    font-size:13px;
+    text-align:center;
+}
+
+
+/* =========================
+   БОЙ
+========================= */
+
+.battle{
+    background:rgba(10,15,30,.9);
+    border:1px solid #3b4c70;
+    border-radius:18px;
+    padding:20px;
+}
+
+.battle h2{
+    text-align:center;
+    margin-top:0;
+}
+
+.hero-info{
+    background:rgba(255,255,255,.06);
+    border-radius:14px;
+    padding:15px;
+    margin-bottom:15px;
+    text-align:center;
+}
+
+.battle-xp-title{
+    color:#d8c9ff;
+    margin-bottom:8px;
+}
+
+.fighters{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.fighter{
+    background:rgba(255,255,255,.06);
+    border-radius:14px;
+    padding:15px;
+    text-align:center;
+}
+
+.fighter-icon{
+    font-size:55px;
+    margin-bottom:5px;
+}
+
+.fighter-name{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.level{
+    color:#aab7d1;
+    margin:5px 0 10px;
+}
+
+.hp-text{
+    margin-bottom:6px;
+}
+
+.health-bar{
+    width:100%;
+    height:14px;
+    background:#331d24;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.health-fill{
+    height:100%;
+    width:100%;
+    background:linear-gradient(90deg,#24c96f,#8bea62);
+    transition:width .3s;
+}
+
+#enemyHealthBar{
+    background:linear-gradient(90deg,#e74c3c,#ff8c42);
+}
+
+.combat-log{
+    margin:18px 0;
+    padding:15px;
+    background:rgba(0,0,0,.35);
+    border-radius:12px;
+    text-align:center;
+    min-height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.actions{
+    display:grid;
+    gap:10px;
+}
+
+#attackButton{
+    background:linear-gradient(135deg,#8e2b2b,#c0392b);
+}
+
+#fireButton{
+    background:linear-gradient(135deg,#c45b00,#f39c12);
+}
+
+#defendButton{
+    background:linear-gradient(135deg,#245a8d,#2980b9);
+}
+
+.result{
+    display:none;
+    margin-top:20px;
+    padding:20px;
+    text-align:center;
+    background:rgba(255,255,255,.08);
+    border-radius:15px;
+}
+
+.result h2{
+    margin-top:0;
+}
+
+#newBattle{
+    background:linear-gradient(135deg,#555,#777);
+    margin-top:10px;
+}
+
+.footer{
+    text-align:center;
+    color:#66738e;
+    font-size:12px;
+    margin:20px 0;
+}
+
+@media(max-width:500px){
+
+    h1{
+        font-size:26px;
+    }
+
+    .game{
+        padding:10px;
+    }
+
+    .fighters{
+        gap:8px;
+    }
+
+    .fighter{
+        padding:10px;
+    }
+
+    .fighter-icon{
+        font-size:42px;
+    }
+
+    .fighter-name{
+        font-size:15px;
+    }
+
+    button{
+        font-size:15px;
+    }
+
+    .hero-main{
+        align-items:flex-start;
+    }
+
+    .hero-avatar{
+        width:60px;
+        height:60px;
+        font-size:40px;
+    }
+
+    .hero-name{
+        font-size:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+<h1>🌑 Эхо древних : начало</h1>
+
+<div class="subtitle">
+    Мир героев, магии и древних драконов
+</div>
+
+<div class="resources">
+
+    <div class="resource">
+        🪙 Золото<br>
+        <strong id="gold">0</strong>
+    </div>
+
+    <div class="resource">
+        💎 Алмазы<br>
+        <strong id="diamonds">0</strong>
+    </div>
+
+    <div class="resource">
+        ⚡ Энергия<br>
+        <strong id="energy">0</strong>
+    </div>
+
+</div>
+
+
+<!-- КАРТА -->
+
+<div class="world-map" id="worldMap">
+
+    <h2>🗺️ Мир древних</h2>
+
+    <div class="kingdoms">
+
+        <button id="asterionButton">
+            🔥 Империя Астерион
+        </button>
+
+        <button class="lunar">
+            🌙 Королевство Лунарис
+        </button>
+
+        <button class="dragon">
+            🐉 Драконьи Пределы
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ГОРОД -->
+
+<div class="city" id="asterionCity" style="display:none;">
+
+    <h2>🔥 Империя Астерион</h2>
+
+    <p>
+        🏰 <strong>Столица: Астерион</strong>
+    </p>
+
+    <p class="city-description">
+        Великая крепость воинов и хранителей огня.
+        Здесь начинается путь героя Володи.
+        За стенами столицы скрываются древние тайны,
+        опасные враги и могущественные артефакты.
+    </p>
+
+
+    <!-- ПАНЕЛЬ ГЕРОЯ -->
+
+    <div class="hero-panel">
+
+        <div class="hero-panel-title">
+            🧙‍♂️ Герой
+        </div>
+
+        <div class="hero-main">
+
+            <div class="hero-avatar">
+                🧙‍♂️
+            </div>
+
+            <div class="hero-details">
+
+                <div class="hero-name">
+                    Володя
+                </div>
+
+                <div class="hero-level">
+                    ⭐ Уровень
+                    <strong id="cityHeroLevel">5</strong>
+                </div>
+
+                <div class="hero-stat">
+                    <span>❤️ Здоровье</span>
+                    <strong>
+                        <span id="cityHeroHp">850</span>
+                        /
+                        <span id="cityHeroMaxHp">850</span>
+                    </strong>
+                </div>
+
+                <div class="hero-stat">
+                    <span>⚔️ Атака</span>
+                    <strong>100–145</strong>
+                </div>
+
+                <div class="hero-stat">
+                    <span>🛡️ Защита</span>
+                    <strong>20%</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-xp">
+
+            <div class="hero-xp-text">
+
+                <span>✨ Опыт</span>
+
+                <strong>
+                    <span id="cityHeroXp">0</span>
+                    /
+                    <span id="cityHeroXpNeeded">500</span>
+                </strong>
+
+            </div>
+
+            <div class="xp-bar">
+
+                <div
+                    class="xp-fill"
+                    id="cityHeroXpBar">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-bonus">
+            📈 Каждый новый уровень увеличивает максимальное HP на +50
+        </div>
+
+    </div>
+
+
+    <button id="inventoryButton">
+        🎒 Инвентарь
+    </button>
+
+    <button id="cityButton" style="margin-top:10px;">
+        ⚔️ Отправиться в бой
+    </button>
+
+    <button id="backToMapButton" style="margin-top:10px;">
+        🗺️ Вернуться на карту
+    </button>
+
+</div>
+
+
+<!-- ИНВЕНТАРЬ -->
+
+<div class="city" id="inventory" style="display:none;">
+
+    <h2>🎒 Инвентарь Володи</h2>
+
+    <p style="font-size:50px;margin:10px 0;">
+        🧙‍♂️
+    </p>
+
+    <p>
+        <strong>Володя</strong>
+    </p>
+
+    <p class="level">
+        Уровень <span id="inventoryLevel">5</span>
+    </p>
+
+    <div style="text-align:left;margin-top:20px;">
+
+        <p>
+            ⚔️ <strong>Железный меч</strong><br>
+            <span style="color:#b8c7e0;">
+                +20 к урону обычной атаки
+            </span>
+        </p>
+
+        <p>
+            🛡️ <strong>Стальной щит</strong><br>
+            <span style="color:#b8c7e0;">
+                Уменьшает урон следующей атаки врага на 20%
+            </span>
+        </p>
+
+        <p>
+            🪖 <strong>Шлем воина</strong><br>
+            <span style="color:#b8c7e0;">
+                Надёжная защита головы
+            </span>
+        </p>
+
+        <p>
+            🧪 <strong>Зелье здоровья</strong><br>
+            <span style="color:#b8c7e0;">
+                Восстанавливает здоровье
+            </span>
+        </p>
+
+    </div>
+
+    <button id="closeInventory" style="margin-top:15px;">
+        ↩️ Вернуться в город
+    </button>
+
+</div>
+
+
+<!-- БИТВА -->
+
+<div class="battle" id="battle">
+
+    <h2>⚔️ Битва</h2>
+
+    <div class="hero-info">
+
+        <div class="battle-xp-title">
+            ⭐ Уровень:
+            <strong id="battleLevel">5</strong>
+        </div>
+
+        <div>
+            ✨ XP:
+            <strong id="xpText">0</strong>
+            /
+            <strong id="xpNeeded">500</strong>
+        </div>
+
+        <div class="xp-bar">
+            <div class="xp-fill" id="xpBar"></div>
+        </div>
+
+    </div>
+
+
+    <div class="fighters">
+
+        <div class="fighter">
+
+            <div class="fighter-icon">
+                🧙‍♂️
+            </div>
+
+            <div class="fighter-name">
+                Володя
+            </div>
+
+            <div class="level">
+                Уровень <span id="fighterLevel">5</span>
+            </div>
+
+            <div class="hp-text">
+                ❤️ HP:
+                <span id="playerHp">850</span>
+                /
+                <span id="playerMaxHp">850</span>
+            </div>
+
+            <div class="health-bar">
+                <div
+                    class="health-fill"
+                    id="playerHealthBar">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="fighter">
+
+            <div class="fighter-icon">
+                👹
+            </div>
+
+            <div class="fighter-name">
+                Кровавый орк
+            </div>
+
+            <div class="level">
+                Уровень 4
+            </div>
+
+            <div class="hp-text">
+                ❤️ HP:
+                <span id="enemyHp">700</span>
+                / 700
+            </div>
+
+            <div class="health-bar">
+                <div
+                    class="health-fill"
+                    id="enemyHealthBar">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="combat-log" id="combatLog">
+        ⚔️ Володя готов к бою!
+    </div>
+
+
+    <div class="actions">
+
+        <button id="attackButton">
+            ⚔️ Обычная атака
+        </button>
+
+        <button id="fireButton">
+            🔥 Огненный удар
+        </button>
+
+        <button id="defendButton">
+            🛡️ Защита
+        </button>
+
+    </div>
+
+
+    <div class="result" id="result">
+
+        <h2 id="resultTitle">
+            🏆 Победа!
+        </h2>
+
+        <p id="resultText"></p>
+
+        <button id="newBattle">
+            ⚔️ Новый бой
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+    🌑 Эхо древних : начало — начало великого приключения
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   НАСТРОЙКИ
+========================= */
+
+const BASE_PLAYER_HP = 850;
+
+const MAX_ENEMY_HP = 700;
+
+const MAX_ENERGY = 10;
+
+const ENERGY_REGEN_TIME =
+    60 * 1000;
+
+
+/* МЕЧ */
+
+const SWORD_BONUS = 20;
+
+
+/* ЩИТ */
+
+const SHIELD_REDUCTION = 0.20;
+
+
+/* ОПЫТ */
+
+const XP_PER_VICTORY = 100;
+
+const XP_FOR_LEVEL_UP = 500;
+
+const HP_PER_LEVEL = 50;
+
+
+/* =========================
+   СОХРАНЁННЫЕ РЕСУРСЫ
+========================= */
+
+const savedGold =
+    localStorage.getItem("gold");
+
+let gold =
+    savedGold === null
+        ? 1250
+        : Number(savedGold);
+
+
+const savedDiamonds =
+    localStorage.getItem("diamonds");
+
+let diamonds =
+    savedDiamonds === null
+        ? 100
+        : Number(savedDiamonds);
+
+
+const savedEnergy =
+    localStorage.getItem("energy");
+
+let energy =
+    savedEnergy === null
+        ? MAX_ENERGY
+        : Number(savedEnergy);
+
+
+/* =========================
+   XP И УРОВЕНЬ
+========================= */
+
+const savedXp =
+    localStorage.getItem("xp");
+
+let xp =
+    savedXp === null
+        ? 0
+        : Number(savedXp);
+
+
+const savedLevel =
+    localStorage.getItem("level");
+
+let playerLevel =
+    savedLevel === null
+        ? 5
+        : Number(savedLevel);
+
+
+if (!Number.isFinite(xp)) {
+    xp = 0;
+}
+
+if (!Number.isFinite(playerLevel)) {
+    playerLevel = 5;
+}
+
+if (!Number.isFinite(gold)) {
+    gold = 1250;
+}
+
+if (!Number.isFinite(diamonds)) {
+    diamonds = 100;
+}
+
+
+/* =========================
+   HP
+========================= */
+
+function getMaxPlayerHp() {
+
+    return BASE_PLAYER_HP +
+        (playerLevel - 5) *
+        HP_PER_LEVEL;
+}
+
+
+let maxPlayerHp =
+    getMaxPlayerHp();
+
+
+let playerHp =
+    maxPlayerHp;
+
+
+let enemyHp =
+    MAX_ENEMY_HP;
+
+
+let defending =
+    false;
+
+
+let battleOver =
+    false;
+
+
+/* =========================
+   ЭНЕРГИЯ
+========================= */
+
+energy =
+    Math.max(
+        0,
+        Math.min(
+            MAX_ENERGY,
+            energy
+        )
+    );
+
+
+let energyTime =
+    Number(
+        localStorage.getItem(
+            "energyTime"
+        )
+    );
+
+
+if (
+    !Number.isFinite(energyTime) ||
+    energyTime <= 0
+) {
+    energyTime =
+        Date.now();
+}
+
+
+/* =========================
+   ЭЛЕМЕНТЫ
+========================= */
+
+const playerHpText =
+    document.getElementById(
+        "playerHp"
+    );
+
+const playerMaxHpText =
+    document.getElementById(
+        "playerMaxHp"
+    );
+
+const enemyHpText =
+    document.getElementById(
+        "enemyHp"
+    );
+
+
+const playerHealthBar =
+    document.getElementById(
+        "playerHealthBar"
+    );
+
+const enemyHealthBar =
+    document.getElementById(
+        "enemyHealthBar"
+    );
+
+
+const goldText =
+    document.getElementById(
+        "gold"
+    );
+
+const diamondsText =
+    document.getElementById(
+        "diamonds"
+    );
+
+const energyText =
+    document.getElementById(
+        "energy"
+    );
+
+
+const battleLevel =
+    document.getElementById(
+        "battleLevel"
+    );
+
+const fighterLevel =
+    document.getElementById(
+        "fighterLevel"
+    );
+
+const inventoryLevel =
+    document.getElementById(
+        "inventoryLevel"
+    );
+
+
+const xpText =
+    document.getElementById(
+        "xpText"
+    );
+
+const xpNeeded =
+    document.getElementById(
+        "xpNeeded"
+    );
+
+const xpBar =
+    document.getElementById(
+        "xpBar"
+    );
+
+
+/* ПАНЕЛЬ ГЕРОЯ */
+
+const cityHeroLevel =
+    document.getElementById(
+        "cityHeroLevel"
+    );
+
+const cityHeroHp =
+    document.getElementById(
+        "cityHeroHp"
+    );
+
+const cityHeroMaxHp =
+    document.getElementById(
+        "cityHeroMaxHp"
+    );
+
+const cityHeroXp =
+    document.getElementById(
+        "cityHeroXp"
+    );
+
+const cityHeroXpNeeded =
+    document.getElementById(
+        "cityHeroXpNeeded"
+    );
+
+const cityHeroXpBar =
+    document.getElementById(
+        "cityHeroXpBar"
+    );
+
+
+const log =
+    document.getElementById(
+        "combatLog"
+    );
+
+
+const result =
+    document.getElementById(
+        "result"
+    );
+
+const resultTitle =
+    document.getElementById(
+        "resultTitle"
+    );
+
+const resultText =
+    document.getElementById(
+        "resultText"
+    );
+
+
+const attackButton =
+    document.getElementById(
+        "attackButton"
+    );
+
+const fireButton =
+    document.getElementById(
+        "fireButton"
+    );
+
+const defendButton =
+    document.getElementById(
+        "defendButton"
+    );
+
+
+const battle =
+    document.getElementById(
+        "battle"
+    );
+
+const worldMap =
+    document.getElementById(
+        "worldMap"
+    );
+
+const asterionCity =
+    document.getElementById(
+        "asterionCity"
+    );
+
+const inventory =
+    document.getElementById(
+        "inventory"
+    );
+
+
+/* =========================
+   СОХРАНЕНИЕ
+========================= */
+
+function saveResources() {
+
+    localStorage.setItem(
+        "gold",
+        gold
+    );
+
+    localStorage.setItem(
+        "diamonds",
+        diamonds
+    );
+
+    localStorage.setItem(
+        "energy",
+        energy
+    );
+
+    localStorage.setItem(
+        "energyTime",
+        energyTime
+    );
+
+    localStorage.setItem(
+        "xp",
+        xp
+    );
+
+    localStorage.setItem(
+        "level",
+        playerLevel
+    );
+}
+
+
+/* =========================
+   ВОССТАНОВЛЕНИЕ ЭНЕРГИИ
+========================= */
+
+function restoreEnergy() {
+
+    if (energy >= MAX_ENERGY) {
+
+        energy =
+            MAX_ENERGY;
+
+        energyTime =
+            Date.now();
+
+        localStorage.setItem(
+            "energy",
+            energy
+        );
+
+        localStorage.setItem(
+            "energyTime",
+            energyTime
+        );
+
+        return;
+    }
+
+
+    const now =
+        Date.now();
+
+
+    const elapsed =
+        now - energyTime;
+
+
+    const restored =
+        Math.floor(
+            elapsed /
+            ENERGY_REGEN_TIME
+        );
+
+
+    if (restored > 0) {
+
+        energy =
+            Math.min(
+                MAX_ENERGY,
+                energy + restored
+            );
+
+
+        if (energy >= MAX_ENERGY) {
+
+            energy =
+                MAX_ENERGY;
+
+            energyTime =
+                now;
+
+        } else {
+
+            energyTime +=
+                restored *
+                ENERGY_REGEN_TIME;
+        }
+
+
+        localStorage.setItem(
+            "energy",
+            energy
+        );
+
+        localStorage.setItem(
+            "energyTime",
+            energyTime
+        );
+    }
+}
+
+
+/* =========================
+   ПРОВЕРКА УРОВНЯ
+========================= */
+
+function checkLevelUp() {
+
+    if (
+        xp >= XP_FOR_LEVEL_UP
+    ) {
+
+        xp -=
+            XP_FOR_LEVEL_UP;
+
+        playerLevel++;
+
+        maxPlayerHp =
+            getMaxPlayerHp();
+
+        playerHp =
+            maxPlayerHp;
+
+
+        log.textContent =
+            "🎉 Новый уровень! Володя достиг " +
+            playerLevel +
+            " уровня! Максимальное HP увеличено.";
+
+
+        saveResources();
+    }
+}
+
+
+/* =========================
+   ЭКРАН
+========================= */
+
+function updateScreen() {
+
+    maxPlayerHp =
+        getMaxPlayerHp();
+
+
+    playerMaxHpText.textContent =
+        maxPlayerHp;
+
+
+    playerHpText.textContent =
+        playerHp;
+
+
+    enemyHpText.textContent =
+        enemyHp;
+
+
+    goldText.textContent =
+        gold;
+
+
+    diamondsText.textContent =
+        diamonds;
+
+
+    energyText.textContent =
+        energy;
+
+
+    battleLevel.textContent =
+        playerLevel;
+
+
+    fighterLevel.textContent =
+        playerLevel;
+
+
+    inventoryLevel.textContent =
+        playerLevel;
+
+
+    xpText.textContent =
+        xp;
+
+
+    xpNeeded.textContent =
+        XP_FOR_LEVEL_UP;
+
+
+    xpBar.style.width =
+        Math.min(
+            100,
+            xp /
+            XP_FOR_LEVEL_UP *
+            100
+        ) + "%";
+
+
+    playerHealthBar.style.width =
+        Math.max(
+            0,
+            playerHp /
+            maxPlayerHp *
+            100
+        ) + "%";
+
+
+    enemyHealthBar.style.width =
+        Math.max(
+            0,
+            enemyHp /
+            MAX_ENEMY_HP *
+            100
+        ) + "%";
+
+
+    /* =========================
+       ПАНЕЛЬ ГЕРОЯ
+    ========================= */
+
+    cityHeroLevel.textContent =
+        playerLevel;
+
+
+    cityHeroHp.textContent =
+        playerHp;
+
+
+    cityHeroMaxHp.textContent =
+        maxPlayerHp;
+
+
+    cityHeroXp.textContent =
+        xp;
+
+
+    cityHeroXpNeeded.textContent =
+        XP_FOR_LEVEL_UP;
+
+
+    cityHeroXpBar.style.width =
+        Math.min(
+            100,
+            xp /
+            XP_FOR_LEVEL_UP *
+            100
+        ) + "%";
+}
+
+
+/* =========================
+   СЛУЧАЙНЫЙ УРОН
+========================= */
+
+function randomDamage(
+    min,
+    max
+) {
+
+    return Math.floor(
+        Math.random() *
+        (max - min + 1)
+    ) + min;
+}
+
+
+/* =========================
+   ХОД ВРАГА
+========================= */
+
+function enemyTurn() {
+
+    if (battleOver) {
+        return;
+    }
+
+
+    const baseDamage =
+        randomDamage(
+            45,
+            85
+        );
+
+
+    let damage =
+        baseDamage;
+
+
+    if (defending) {
+
+        damage =
+            Math.floor(
+                baseDamage *
+                (1 - SHIELD_REDUCTION)
+            );
+
+
+        log.textContent =
+            "🛡️ Стальной щит блокирует 20% урона! Орк наносит " +
+            damage +
+            " урона.";
+
+    } else {
+
+        log.textContent =
+            "👹 Кровавый орк наносит " +
+            damage +
+            " урона!";
+    }
+
+
+    playerHp =
+        Math.max(
+            0,
+            playerHp - damage
+        );
+
+
+    defending =
+        false;
+
+
+    updateScreen();
+
+
+    if (playerHp <= 0) {
+
+        endBattle(false);
+    }
+}
+
+
+/* =========================
+   ДЕЙСТВИЕ ИГРОКА
+========================= */
+
+function playerAction(type) {
+
+    if (battleOver) {
+        return;
+    }
+
+
+    restoreEnergy();
+
+
+    if (energy <= 0) {
+
+        log.textContent =
+            "⚡ Недостаточно энергии! Подожди восстановления.";
+
+        updateScreen();
+
+        return;
+    }
+
+
+    const wasFull =
+        energy === MAX_ENERGY;
+
+
+    energy--;
+
+
+    if (wasFull) {
+
+        energyTime =
+            Date.now();
+    }
+
+
+    localStorage.setItem(
+        "energy",
+        energy
+    );
+
+    localStorage.setItem(
+        "energyTime",
+        energyTime
+    );
+
+
+    /* ОБЫЧНАЯ АТАКА */
+
+    if (type === "attack") {
+
+        const baseDamage =
+            randomDamage(
+                80,
+                125
+            );
+
+
+        const damage =
+            baseDamage +
+            SWORD_BONUS;
+
+
+        enemyHp =
+            Math.max(
+                0,
+                enemyHp - damage
+            );
+
+
+        log.textContent =
+            "⚔️ Володя наносит " +
+            damage +
+            " урона мечом!";
+    }
+
+
+    /* ОГНЕННЫЙ УДАР */
+
+    if (type === "fire") {
+
+        const damage =
+            randomDamage(
+                130,
+                190
+            );
+
+
+        enemyHp =
+            Math.max(
+                0,
+                enemyHp - damage
+            );
+
+
+        log.textContent =
+            "🔥 Огненный удар Володи наносит " +
+            damage +
+            " урона!";
+    }
+
+
+    /* ЗАЩИТА */
+
+    if (type === "defend") {
+
+        defending =
+            true;
+
+
+        log.textContent =
+            "🛡️ Володя приготовился защищаться. Стальной щит уменьшит следующую атаку орка на 20%.";
+    }
+
+
+    updateScreen();
+
+
+    if (enemyHp <= 0) {
+
+        endBattle(true);
+
+        return;
+    }
+
+
+    setTimeout(
+        enemyTurn,
+        600
+    );
+}
+
+
+/* =========================
+   КОНЕЦ БОЯ
+========================= */
+
+function endBattle(playerWon) {
+
+    battleOver =
+        true;
+
+
+    attackButton.disabled =
+        true;
+
+    fireButton.disabled =
+        true;
+
+    defendButton.disabled =
+        true;
+
+
+    result.style.display =
+        "block";
+
+
+    if (playerWon) {
+
+        const reward =
+            randomDamage(
+                100,
+                180
+            );
+
+
+        gold +=
+            reward;
+
+
+        xp +=
+            XP_PER_VICTORY;
+
+
+        const oldLevel =
+            playerLevel;
+
+
+        checkLevelUp();
+
+
+        localStorage.setItem(
+            "gold",
+            gold
+        );
+
+
+        resultTitle.textContent =
+            "🏆 Победа!";
+
+
+        resultText.textContent =
+            "Кровавый орк повержен! " +
+            "Ты получил " +
+            reward +
+            " золота и " +
+            XP_PER_VICTORY +
+            " XP.";
+
+
+        if (
+            playerLevel >
+            oldLevel
+        ) {
+
+            resultText.textContent +=
+                " 🎉 Новый уровень: " +
+                playerLevel +
+                "!";
+        }
+
+
+        log.textContent =
+            "🎉 Победа! +" +
+            XP_PER_VICTORY +
+            " XP";
+
+
+        saveResources();
+
+    } else {
+
+        resultTitle.textContent =
+            "💀 Поражение";
+
+
+        resultText.textContent =
+            "Володя пал в бою. Попробуй ещё раз.";
+
+
+        log.textContent =
+            "💀 Володя повержен.";
+    }
+
+
+    updateScreen();
+}
+
+
+/* =========================
+   НОВЫЙ БОЙ
+========================= */
+
+function resetBattle() {
+
+    maxPlayerHp =
+        getMaxPlayerHp();
+
+
+    playerHp =
+        maxPlayerHp;
+
+
+    enemyHp =
+        MAX_ENEMY_HP;
+
+
+    defending =
+        false;
+
+
+    battleOver =
+        false;
+
+
+    attackButton.disabled =
+        false;
+
+    fireButton.disabled =
+        false;
+
+    defendButton.disabled =
+        false;
+
+
+    result.style.display =
+        "none";
+
+
+    log.textContent =
+        "⚔️ Володя готов к бою! Твой ход.";
+
+
+    restoreEnergy();
+
+    updateScreen();
+}
+
+
+/* =========================
+   КНОПКИ БОЯ
+========================= */
+
+attackButton.addEventListener(
+    "click",
+    () =>
+        playerAction("attack")
+);
+
+
+fireButton.addEventListener(
+    "click",
+    () =>
+        playerAction("fire")
+);
+
+
+defendButton.addEventListener(
+    "click",
+    () =>
+        playerAction("defend")
+);
+
+
+document
+    .getElementById("newBattle")
+    .addEventListener(
+        "click",
+        resetBattle
+    );
+
+
+/* =========================
+   АСТЕРИОН
+========================= */
+
+document
+    .getElementById(
+        "asterionButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            worldMap.style.display =
+                "none";
+
+            asterionCity.style.display =
+                "block";
+
+            battle.style.display =
+                "none";
+
+            inventory.style.display =
+                "none";
+
+            updateScreen();
+        }
+    );
+
+
+/* =========================
+   ИНВЕНТАРЬ
+========================= */
+
+document
+    .getElementById(
+        "inventoryButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            asterionCity.style.display =
+                "none";
+
+            inventory.style.display =
+                "block";
+
+            battle.style.display =
+                "none";
+
+            updateScreen();
+        }
+    );
+
+
+document
+    .getElementById(
+        "closeInventory"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            inventory.style.display =
+                "none";
+
+            asterionCity.style.display =
+                "block";
+
+            updateScreen();
+        }
+    );
+
+
+/* =========================
+   ВОЙТИ В БОЙ
+========================= */
+
+document
+    .getElementById(
+        "cityButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            asterionCity.style.display =
+                "none";
+
+            inventory.style.display =
+                "none";
+
+            battle.style.display =
+                "block";
+
+            resetBattle();
+        }
+    );
+
+
+/* =========================
+   НАЗАД НА КАРТУ
+========================= */
+
+document
+    .getElementById(
+        "backToMapButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            asterionCity.style.display =
+                "none";
+
+            inventory.style.display =
+                "none";
+
+            battle.style.display =
+                "none";
+
+            worldMap.style.display =
+                "block";
+        }
+    );
+
+
+/* =========================
+   ЗАПУСК
+========================= */
+
+battle.style.display =
+    "none";
+
+inventory.style.display =
+    "none";
+
+
+restoreEnergy();
+
+saveResources();
+
+updateScreen();
+
+
+/* =========================
+   ПРОВЕРКА ЭНЕРГИИ
+========================= */
+
+setInterval(
+    () => {
+
+        restoreEnergy();
+
+        updateScreen();
+
+    },
+    1000
+);
+
+</script>
+
+</body>
+</html>
